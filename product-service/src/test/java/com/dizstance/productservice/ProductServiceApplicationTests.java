@@ -3,7 +3,6 @@ package com.dizstance.productservice;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.dizstance.productservice.dto.ProductRequestDTO;
 
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -25,8 +24,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Testcontainers
 class ProductServiceApplicationTests {
+
+	//docker run -e MONGODB_USERNAME=... -e MONGODB_PASSWORD =... mongodb - version 4.0.10
 	@Container
 	static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:4.0.10");
+	//.whitUserName(MONGODB_USERNAME)
+	//.whitPassword(MONGODB_PASSWORD)
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -34,6 +37,7 @@ class ProductServiceApplicationTests {
 	@Autowired
 	private ObjectMapper objectMapper;
 
+	//Habilita la posibilidad de sobreescribir las propiedades ya establecidas del archivo application.properties
 	@DynamicPropertySource
 	static void setProperties (DynamicPropertyRegistry dynamicPropertyRegistry) {
 		dynamicPropertyRegistry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
