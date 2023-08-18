@@ -1,15 +1,34 @@
 package com.dizstance.orderservice.controller;
 
 import com.dizstance.orderservice.dto.OrderRequestDTO;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.dizstance.orderservice.dto.OrderResponseDTO;
+import com.dizstance.orderservice.service.OrderService;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/order")
 public class OrderController {
-    @PostMapping
-    public String placeOrder(OrderRequestDTO orderRequestDTO) {
-        return "Order Placed Succesfully";
+
+    private final OrderService orderService;
+
+    public OrderController(OrderService orderService) {
+        this.orderService = orderService;
     }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public void placeOrder(OrderRequestDTO orderRequestDTO) {
+        orderService.placeOrder(orderRequestDTO);
+    }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public List<OrderResponseDTO> listAllOrders () {
+        return orderService.getAllOrders();
+    }
+
+
 }
