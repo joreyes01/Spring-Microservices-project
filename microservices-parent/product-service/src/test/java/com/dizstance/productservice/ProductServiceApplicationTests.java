@@ -1,8 +1,10 @@
 package com.dizstance.productservice;
 
+import com.dizstance.productservice.repository.ProductRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.dizstance.productservice.dto.ProductRequestDTO;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -37,6 +39,9 @@ class ProductServiceApplicationTests {
 	@Autowired
 	private ObjectMapper objectMapper;
 
+	@Autowired
+	private ProductRepository productRepository;
+
 	//Habilita la posibilidad de sobreescribir las propiedades ya establecidas del archivo application.properties
 	@DynamicPropertySource
 	static void setProperties (DynamicPropertyRegistry dynamicPropertyRegistry) {
@@ -51,6 +56,7 @@ class ProductServiceApplicationTests {
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(productRequestString))
 				.andExpect(status().isCreated());
+		Assertions.assertEquals(1, productRepository.findAll().size());
 	}
 
 	private ProductRequestDTO getProductRequest() {
