@@ -1,0 +1,19 @@
+services:
+  mysqldb-order:
+    image: mysql:latest
+    restart: always
+    container_name: mysqldb-order
+    environment:
+      - MYSQL_DATABASE=order-service
+      - MYSQL_ROOT_PASSWORD=mysql
+    ports:
+      - '3306:3306'
+  mysqldb-inventory:
+    image: mysql:latest
+    restart: always
+    container_name: mysqldb-inventory
+    environment:
+      - MYSQL_DATABASE=inventory-service
+      - MYSQL_ROOT_PASSWORD=mysql
+    ports:
+      - '3307:3306'
