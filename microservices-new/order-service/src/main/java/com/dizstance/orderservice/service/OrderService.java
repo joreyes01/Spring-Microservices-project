@@ -15,11 +15,11 @@ import java.util.function.Function;
 @Service
 public class OrderService {
     private final OrderRepository orderRepository;
-    private final WebClient webClient;
+    private final WebClient.Builder webClientBuilder;
 
-    public OrderService(OrderRepository orderRepository, WebClient webClient) {
+    public OrderService(OrderRepository orderRepository, WebClient.Builder webClientBuilder) {
         this.orderRepository = orderRepository;
-        this.webClient = webClient;
+        this.webClientBuilder = webClientBuilder;
     }
 
     public void placeOrder(OrderRequestDTO orderRequestDTO) {
@@ -33,8 +33,10 @@ public class OrderService {
         // Call inventory service, and place order if product is in stock
         // Necesario hacer la validación porque la lista puede contener 1 solo elemento
         // pero sí alguno de los elementos no tiene stock, toda la orden debería rechazarse
-        InventoryResponseDTO[] inventoryResponses = webClient.get()
-                .uri("http://localhost:8082/api/inventory",
+        InventoryResponseDTO[] inventoryResponses = webClientBuilder
+                .build()
+                .get()
+                .uri("http://inventory-service/api/inventory",
                         uriBuilder -> uriBuilder.queryParam("skuCode", skuCodesList).build())
                 .retrieve()
                 .bodyToMono(InventoryResponseDTO[].class)

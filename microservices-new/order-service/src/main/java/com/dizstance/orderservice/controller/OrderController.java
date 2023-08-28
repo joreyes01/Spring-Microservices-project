@@ -20,7 +20,7 @@ public class OrderController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public String placeOrder(OrderRequestDTO orderRequestDTO) {
+    public String placeOrder(@RequestBody OrderRequestDTO orderRequestDTO) {
         orderService.placeOrder(orderRequestDTO);
         return "Order placed";
     }
